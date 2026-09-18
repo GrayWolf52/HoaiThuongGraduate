@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//private/tmp/**)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --hide-scrollbars --virtual-time-budget=9000 --window-size=430,1620 --screenshot=/tmp/m2.png \"http://localhost:8777/index.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2 --virtual-time-budget=8000 --window-size=430,932 --screenshot=/tmp/m3.png \"http://localhost:8777/index.html\")",
+      "Bash(python3 -c ' *)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=9000 --window-size=390,1640 --screenshot=/tmp/m4.png \"http://localhost:8777/_debug.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=9000 --window-size=390,1620 --screenshot=/tmp/m5.png \"http://localhost:8777/_debug.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=9000 --window-size=1440,1500 --screenshot=/tmp/d5.png \"http://localhost:8777/_debug2.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=9000 --window-size=1440,760 --screenshot=/tmp/d6.png \"http://localhost:8777/_debug2.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=1200 --window-size=390,700 --screenshot=/tmp/env.png \"http://localhost:8777/_debug.html\")",
+      "Bash(pkill -f \"http.server 8777\")",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=10000 --window-size=390,1250 --screenshot=/tmp/c_m2.png http://localhost:8777/_dbg.html)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --hide-scrollbars --virtual-time-budget=10000 --window-size=1280,1100 --screenshot=/tmp/c_d2.png http://localhost:8777/_dbg2.html)",
+      "Bash(curl -s \"http://localhost:8778/exec?action=list\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(len\\(d['data']\\)\\); [print\\(' -',r['ten'],'|',r['loi']\\) for r in d['data']]\")",
+      "Bash(pkill -f fake_gs.py)",
+      "Bash(rm -f /tmp/fake_gs.py)"
+    ]
+  }
+}

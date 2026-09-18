@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thiệp mời Lễ Tốt Nghiệp — Hoài Thương</title>
+<meta name="description" content="Thân mời bạn đến tham dự Lễ Tốt Nghiệp của Hoài Thương — 8:00 sáng, Thứ Bảy 26/09/2026, Học viện Công nghệ Bưu chính Viễn thông.">
+<meta name="theme-color" content="#ffd8e7">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Thiệp mời Lễ Tốt Nghiệp — Hoài Thương">
+<meta property="og:description" content="8:00 sáng, Thứ Bảy 26/09/2026 — Học viện Công nghệ Bưu chính Viễn thông.">
+<meta property="og:image" content="Image/img_2.JPG">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ══════════ Nền: tim & sao bay ══════════ -->
+<div class="sky" id="sky" aria-hidden="true"></div>
+
+<!-- ══════════ Màn mở thiệp ══════════ -->
+<div class="opener" id="opener">
+  <div class="opener__inner">
+
+    <div class="mail" id="mail" role="button" tabindex="0" aria-label="Mở thiệp mời">
+      <svg viewBox="0 0 160 120" aria-hidden="true">
+        <rect x="6" y="18" width="148" height="96" rx="18" class="mail__body"/>
+        <path d="M6 36 80 84 154 36" class="mail__flap"/>
+        <g class="mail__heart">
+          <path d="M80 8c-7-9-22-6-22 6 0 10 13 17 22 24 9-7 22-14 22-24 0-12-15-15-22-6z"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="opener__hint">Chạm để mở thiệp nha <span class="wiggle">♡</span></p>
+  </div>
+</div>
+
+<!-- ══════════ Thiệp ══════════ -->
+<main class="stage">
+  <article class="card" id="card">
+
+    <!-- Sticker trang trí -->
+    <span class="sticker sticker--star1" aria-hidden="true">✦</span>
+    <span class="sticker sticker--star2" aria-hidden="true">✿</span>
+    <span class="sticker sticker--star3" aria-hidden="true">✦</span>
+    <span class="sticker sticker--heart1" aria-hidden="true">♡</span>
+
+    <div class="card__body">
+
+      <!-- Thân mời -->
+      <div class="badge reveal">
+        <span aria-hidden="true">✦</span> Thân mời <span aria-hidden="true">✦</span>
+      </div>
+
+      <!-- Tên khách mời (đổi được qua ?ten=...) -->
+      <p class="guest reveal" id="guestName">Cậu iu dấu ơi</p>
+
+      <p class="eyebrow reveal">đến tham dự</p>
+
+      <div class="headline-wrap">
+        <!-- Mũ tốt nghiệp cute -->
+        <svg class="cap cap--right" viewBox="0 0 130 108" aria-hidden="true">
+          <path d="M8 34 65 10l57 24-57 24z" class="cap__top"/>
+          <path d="M30 48v20c0 10 16 16 35 16s35-6 35-16V48L65 62z" class="cap__base"/>
+          <path d="M118 36v28" class="cap__string"/>
+          <path d="M118 66c-4-5-12-3-12 3 0 6 7 10 12 14 5-4 12-8 12-14 0-6-8-8-12-3z" class="cap__charm"/>
+        </svg>
+        <svg class="cap cap--left" viewBox="0 0 130 108" aria-hidden="true">
+          <path d="M8 34 65 10l57 24-57 24z" class="cap__top"/>
+          <path d="M30 48v20c0 10 16 16 35 16s35-6 35-16V48L65 62z" class="cap__base"/>
+          <path d="M118 36v28" class="cap__string"/>
+          <path d="M118 66c-4-5-12-3-12 3 0 6 7 10 12 14 5-4 12-8 12-14 0-6-8-8-12-3z" class="cap__charm"/>
+        </svg>
+
+        <h1 class="headline reveal">Lễ Tốt Nghiệp</h1>
+      </div>
+
+      <p class="owner reveal">của Hoài Thương nhé!</p>
+
+      <!-- Ảnh -->
+      <figure class="photo reveal">
+        <div class="photo__inner">
+          <img src="Image/img_2.JPG" alt="Hoài Thương" width="1707" height="2560" loading="eager" decoding="async">
+        </div>
+        <!-- Nơ xinh trên đỉnh ảnh -->
+        <svg class="bow" viewBox="0 0 140 80" aria-hidden="true">
+          <path d="M66 40 20 14c-10-5-18 4-16 14 2 11 12 18 24 16z" class="bow__wing"/>
+          <path d="M74 40l46-26c10-5 18 4 16 14-2 11-12 18-24 16z" class="bow__wing"/>
+          <path d="M66 46 26 70c-9 5-17-3-15-12 2-10 11-16 22-14z" class="bow__wing bow__wing--low"/>
+          <path d="M74 46l40 24c9 5 17-3 15-12-2-10-11-16-22-14z" class="bow__wing bow__wing--low"/>
+          <ellipse cx="70" cy="43" rx="13" ry="12" class="bow__knot"/>
+        </svg>
+      </figure>
+
+      <!-- Thời gian & địa điểm -->
+      <div class="details reveal">
+        <div class="chip">
+          <span class="chip__emoji" aria-hidden="true">🗓️</span>
+          <p class="chip__lines">
+            <b>Thứ Bảy, 26 / 09 / 2026</b>
+            <span>8:00 sáng</span>
+          </p>
+        </div>
+        <a class="chip chip--link" href="https://maps.app.goo.gl/AX76K77GhgZoKa3YA"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Mở bản đồ tới Học viện Công nghệ Bưu chính Viễn thông">
+          <span class="chip__emoji" aria-hidden="true">📍</span>
+          <span class="chip__lines">
+            <b>Học viện Công nghệ Bưu chính Viễn thông</b>
+            <span>Hà Đông, Hà Nội</span>
+            <span class="chip__go">Xem bản đồ ↗</span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Đếm ngược -->
+      <section class="countdown reveal" aria-label="Đếm ngược tới lễ tốt nghiệp">
+        <p class="countdown__label" id="countdownLabel">Còn chút xíu nữa thôi</p>
+        <ul class="countdown__list" id="countdown">
+          <li><b data-unit="d">00</b><span>ngày</span></li>
+          <li><b data-unit="h">00</b><span>giờ</span></li>
+          <li><b data-unit="m">00</b><span>phút</span></li>
+          <li><b data-unit="s">00</b><span>giây</span></li>
+        </ul>
+      </section>
+
+      <p class="signoff reveal">Có cậu tới nữa là vui hết nấc luôn á <span aria-hidden="true">♡</span></p>
+
+      <!-- ══════════ Sổ lưu bút ══════════ -->
+      <section class="wishes reveal" id="wishes" aria-labelledby="wishesTitle">
+        <h2 class="wishes__title" id="wishesTitle">
+          Gửi lời tốt đẹp <span aria-hidden="true">💌</span>
+        </h2>
+        <p class="wishes__sub">Để lại đôi dòng cho Thương nha!</p>
+
+        <form class="wform" id="wishForm" autocomplete="off" novalidate>
+          <label class="wform__row">
+            <span class="wform__label">Tên của cậu</span>
+            <input class="wform__input" id="wishName" type="text" maxlength="40"
+                   placeholder="VD: Minh Anh" required>
+          </label>
+
+          <label class="wform__row">
+            <span class="wform__label">Lời chúc</span>
+            <textarea class="wform__input wform__area" id="wishText" rows="3" maxlength="300"
+                      placeholder="Chúc Thương ra trường rực rỡ, đi đâu cũng gặp may nha…" required></textarea>
+            <span class="wform__count"><b id="wishCount">0</b>/300</span>
+          </label>
+
+          <!-- Bẫy spam: người thật không nhìn thấy ô này -->
+          <input class="wform__trap" id="wishTrap" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <button class="btn wform__send" id="wishSend" type="submit">Gửi lời chúc ♡</button>
+          <p class="wform__note" id="wishNote" role="status" aria-live="polite" hidden></p>
+        </form>
+
+        <p class="wlist__state" id="wishState">Đang tải lời chúc…</p>
+        <div class="wlist-wrap" id="wishScroll">
+          <ul class="wlist" id="wishList" tabindex="0"></ul>
+        </div>
+      </section>
+
+    </div>
+  </article>
+
+  <p class="toast" id="toast" role="status" aria-live="polite"></p>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
