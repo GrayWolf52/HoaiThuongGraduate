@@ -13,6 +13,7 @@ var SHEET_NAME = 'LoiChuc';
 var MAX_NAME = 40;
 var MAX_MSG = 300;
 var MAX_ROWS_RETURNED = 200;
+var DISCORD_WEBHOOK_URL = '';  // Discord được gửi trực tiếp từ trang web.
 
 /* ---------------------------------------------------------- *
  * Điểm vào
@@ -98,8 +99,60 @@ function addWish(p) {
 
   var luc = new Date();
   sh.appendRow([luc, ten, loi, true]);
+  var discord = sendDiscordNotification(ten, loi, luc);
 
-  return { ok: true, data: { ten: ten, loi: loi, luc: luc.toISOString() } };
+  return {
+    ok: true,
+    data: { ten: ten, loi: loi, luc: luc.toISOString() },
+    discord: discord
+  };
+}
+
+function sendDiscordNotification(ten, loi, luc) {
+  if (!DISCORD_WEBHOOK_URL) return { ok: false, error: 'Chưa cấu hình Discord webhook.' };
+
+  var payload = {
+    username: 'Sổ lưu bút Hoài Thương',
+    allowed_mentions: { parse: [] },
+    embeds: [{
+      title: 'Có lời chúc mới',
+      color: 10184504,
+      fields: [
+        { name: 'Người gửi', value: ten, inline: true },
+        { name: 'Lời chúc', value: loi, inline: false }
+      ],
+      timestamp: luc.toISOString(),
+      footer: { text: 'Thiệp mời Lễ Tốt Nghiệp' }
+    }]
+  };
+
+  try {
+    var response = UrlFetchApp.fetch(DISCORD_WEBHOOK_URL, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+
+    var code = response.getResponseCode();
+    if (code >= 300) {
+      Logger.log('Discord webhook lỗi HTTP ' + code + ': ' + response.getContentText());
+      return { ok: false, status: code, error: response.getContentText() };
+    }
+    Logger.log('Discord webhook đã gửi thành công. HTTP ' + code);
+    return { ok: true, status: code };
+  } catch (err) {
+    Logger.log('Không gửi được Discord webhook: ' + err);
+    return { ok: false, error: String(err) };
+  }
+}
+
+function testDiscordWebhook() {
+  sendDiscordNotification(
+    'Kiểm tra kết nối',
+    'Webhook Discord đã kết nối với Google Apps Script.',
+    new Date()
+  );
 }
 
 /* ---------------------------------------------------------- *

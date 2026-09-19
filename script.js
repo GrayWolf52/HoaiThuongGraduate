@@ -11,7 +11,8 @@
    * Ví dụ: 'https://script.google.com/macros/s/AKfycbx..../exec'
    * Để trống thì lời chúc chỉ lưu tạm trong máy người xem.
    * ------------------------------------------------------------------ */
-  var WISH_API = 'https://script.google.com/macros/s/AKfycbwTzzcBmezBlmRppLSU3BtpIEgjjqpfVlG2THK6IZgeS5MDvTng5Dke1Jzc8UuyJsdI/exec';
+  var WISH_API = 'https://script.google.com/macros/s/AKfycbwNbBz3Q9kAVZIGD8hm1SXlvtUgrbNX-VlB37obdg4UCqybCa3hHabZdrhJLOCt50w/exec';
+  var DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1550720378668711947/WWLWSiYb4EuHLtF3kryXECIvtT4dVDJCa0-JsZsuInjrTCF7UPN8U0JvpXLocX56ZE06';
 
   /* --- Thông tin buổi lễ --------------------------------------------- */
   // 8:00 sáng, Thứ Bảy 26/09/2026 (giờ Việt Nam, UTC+7)
@@ -19,6 +20,29 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var rand = function (min, max) { return min + Math.random() * (max - min); };
+
+  function sendDiscordDirect(ten, loi, luc) {
+    if (!DISCORD_WEBHOOK_URL) return;
+
+    fetch(DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'Sổ lưu bút Hoài Thương',
+        allowed_mentions: { parse: [] },
+        embeds: [{
+          title: 'Có lời chúc mới',
+          color: 10184504,
+          fields: [
+            { name: 'Người gửi', value: ten, inline: true },
+            { name: 'Lời chúc', value: loi, inline: false }
+          ],
+          timestamp: luc,
+          footer: { text: 'Thiệp mời Lễ Tốt Nghiệp' }
+        }]
+      })
+    }).catch(function () {});
+  }
 
   /* --- Tên khách mời: đọc từ ?ten=... hoặc #ten ----------------------- */
   (function setGuestName() {
@@ -388,6 +412,8 @@
         if (!savedOnline) writeLocal(items);
         render(wish.id);
         elList.scrollTop = 0;         // lời chúc mới nhất nằm trên cùng
+        try { localStorage.removeItem(NAME_KEY); } catch (err) {}
+        elName.value = '';
         elText.value = '';
         elCount.textContent = '0';
         sending = false;
@@ -409,6 +435,7 @@
           return;
         }
         if (res.data && res.data.luc) wish.luc = res.data.luc;
+        sendDiscordDirect(wish.ten, wish.loi, wish.luc);
         done(true);
       });
     });

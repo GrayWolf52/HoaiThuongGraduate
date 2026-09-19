@@ -49,6 +49,20 @@ var WISH_API = 'https://script.google.com/macros/s/AKfycbx....../exec';
 Lưu lại, tải lại trang — xong. Lời chúc khách gửi sẽ chạy thẳng vào Sheet
 và hiện lên thiệp.
 
+## 5. Gửi thông báo lời chúc về Discord
+
+Trang web hiện gửi Discord trực tiếp sau khi Apps Script lưu lời chúc vào Sheet.
+Webhook được cấu hình trong `script.js`, còn `apps-script.gs` để trống webhook
+để tránh gửi trùng.
+
+Sau khi thay đổi `apps-script.gs`, hãy lưu và triển khai lại với **Phiên bản: Mới**.
+
+Mỗi lời chúc mới sẽ được ghi vào Sheet và gửi thành một embed Discord gồm tên,
+nội dung và thời gian. Nếu Discord lỗi, lời chúc vẫn được lưu vào Sheet.
+
+> Lưu ý: gửi trực tiếp từ frontend làm webhook có thể bị xem trong mã trình duyệt.
+> Với website công khai, nên chuyển lại việc gửi Discord về Apps Script để bảo mật.
+
 ---
 
 ## Những việc hay dùng sau này
