@@ -82,6 +82,14 @@
   /* --- Mở thiệp ------------------------------------------------------- */
   var opener = $('opener');
   var card = $('card');
+  var backgroundMusic = $('backgroundMusic');
+
+  function playBackgroundMusic() {
+    if (!backgroundMusic) return;
+    backgroundMusic.load();
+    var playback = backgroundMusic.play();
+    if (playback && typeof playback.catch === 'function') playback.catch(function () {});
+  }
 
   function stagger() {
     var items = card.querySelectorAll('.reveal');
@@ -97,6 +105,7 @@
     document.body.style.overflow = '';
     stagger();
     confetti(60);
+    playBackgroundMusic();
     window.setTimeout(function () { opener.remove(); }, 900);
   }
 
