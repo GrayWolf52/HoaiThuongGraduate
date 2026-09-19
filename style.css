@@ -209,9 +209,7 @@ body{
 }
 .card__body{
   position:relative; z-index:2;
-  /* Chừa đủ chỗ cho decor top (dây cờ chạm đáy ở ~38.4cqw) rồi mới tới chữ */
-  padding:clamp(150px,41vw,300px) var(--pad) var(--pad);   /* fallback */
-  padding:44cqw var(--pad) var(--pad);
+  padding:clamp(38px,8vw,58px) var(--pad) var(--pad);
   text-align:center;
 }
 
