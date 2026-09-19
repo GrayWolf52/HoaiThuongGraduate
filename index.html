@@ -75,7 +75,7 @@
 
       <!-- Thân mời -->
       <div class="badge reveal">
-        <span aria-hidden="true">✦</span> Thư mời tham dự <span aria-hidden="true">✦</span>
+        THƯ MỜI THAM DỰ
       </div>
 
       <div class="headline-wrap">
@@ -93,11 +93,11 @@
           <path d="M118 66c-4-5-12-3-12 3 0 6 7 10 12 14 5-4 12-8 12-14 0-6-8-8-12-3z" class="cap__charm"/>
         </svg>
 
-        <h1 class="headline reveal">Lễ tốt nghiệp</h1>
+        <h1 class="headline reveal">LỄ TỐT NGHIỆP CỦA<br>HOÀI THƯƠNG</h1>
       </div>
 
-      <p class="owner-prefix reveal">của</p>
-      <p class="owner reveal">Hoài Thương</p>
+      <p class="owner-prefix reveal">HÂN HẠNH MỜI:</p>
+      <p class="owner reveal">BẠN X</p>
 
       <!-- Ảnh -->
       <div class="photo-gallery reveal">
@@ -151,7 +151,7 @@
         </ul>
       </section>
 
-      <p class="signoff reveal">Có cậu tới nữa là vui hết nấc luôn á <span aria-hidden="true">♡</span></p>
+      <p class="signoff reveal">Có bạn tới nữa là vui hết nấc luôn á <span aria-hidden="true">♡</span></p>
 
       <!-- ══════════ Sổ lưu bút ══════════ -->
       <section class="wishes reveal" id="wishes" aria-labelledby="wishesTitle">
@@ -187,11 +187,24 @@
         </div>
       </section>
 
+      <!-- ══════════ Story ảnh ══════════ -->
+      <section class="story reveal" id="story" aria-labelledby="storyTitle">
+        <h2 class="story__title" id="storyTitle">Nhìn lại một vài khoảnh khắc đáng nhớ của Thương <span aria-hidden="true">✿</span></h2>
+        <div class="story__grid" id="storyGrid"></div>
+      </section>
+
     </div>
   </article>
 
   <p class="toast" id="toast" role="status" aria-live="polite"></p>
 </main>
+
+<div class="story-lightbox" id="storyLightbox" role="dialog" aria-modal="true" aria-label="Xem ảnh Story" hidden>
+  <button class="story-lightbox__close" id="storyLightboxClose" type="button" aria-label="Đóng ảnh">×</button>
+  <button class="story-lightbox__nav story-lightbox__prev" id="storyLightboxPrev" type="button" aria-label="Ảnh trước">‹</button>
+  <img class="story-lightbox__image" id="storyLightboxImage" src="" alt="">
+  <button class="story-lightbox__nav story-lightbox__next" id="storyLightboxNext" type="button" aria-label="Ảnh tiếp theo">›</button>
+</div>
 
 <script src="script.js"></script>
 </body>

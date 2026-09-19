@@ -78,6 +78,66 @@
     }
   })();
 
+  /* --- Story: xếp ngẫu nhiên các ảnh kỷ niệm ------------------------- */
+  (function story() {
+    var grid = $('storyGrid');
+    if (!grid) return;
+    var lightbox = $('storyLightbox');
+    var lightboxImage = $('storyLightboxImage');
+    var lightboxClose = $('storyLightboxClose');
+    var lightboxPrev = $('storyLightboxPrev');
+    var lightboxNext = $('storyLightboxNext');
+    var storyImages = [];
+    var currentIndex = 0;
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function showImage(index) {
+      currentIndex = (index + storyImages.length) % storyImages.length;
+      lightboxImage.src = storyImages[currentIndex].src;
+      lightboxImage.alt = storyImages[currentIndex].alt;
+    }
+
+    var order = ['st1.jpg', 'st2.jpg', 'st3.jpg', 'st4.jpg', 'st5.jpg'];
+    var tilts = ['-1.5deg', '1.8deg', '-1deg', '1.2deg', '-1.4deg'];
+
+    order.forEach(function (file, i) {
+      var figure = document.createElement('figure');
+      var orientation = (file === 'st2.jpg' || file === 'st3.jpg') ? 'portrait' : 'landscape';
+      figure.className = 'story__item story__item--' + orientation;
+      figure.style.setProperty('--tilt', tilts[i]);
+      var image = document.createElement('img');
+      image.src = 'Image/story/' + file;
+      image.alt = 'Khoảnh khắc của Hoài Thương ' + (i + 1);
+      image.loading = 'lazy';
+      figure.appendChild(image);
+      grid.appendChild(figure);
+      storyImages.push(image);
+      figure.addEventListener('click', function () {
+        currentIndex = storyImages.indexOf(image);
+        showImage(currentIndex);
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+        lightboxClose.focus();
+      });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', function () { showImage(currentIndex - 1); });
+    lightboxNext.addEventListener('click', function () { showImage(currentIndex + 1); });
+    lightbox.addEventListener('click', function (event) {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+      if (!lightbox.hidden && event.key === 'ArrowLeft') showImage(currentIndex - 1);
+      if (!lightbox.hidden && event.key === 'ArrowRight') showImage(currentIndex + 1);
+    });
+  })();
+
   /* --- Confetti khi mở thiệp ------------------------------------------ */
   function confetti(count) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -315,7 +375,7 @@
       var total = items.length;
 
       if (!total) {
-        elState.textContent = 'Chưa có lời chúc nào — cậu viết dòng đầu tiên nha ♡';
+        elState.textContent = 'Chưa có lời chúc nào — bạn hãy viết dòng đầu tiên nha ♡';
         elState.hidden = false;
         elList.innerHTML = '';
         updateFade();
@@ -355,7 +415,7 @@
         if (err || !res || !res.ok) {
           items = readLocal();
           render();
-          if (!items.length) elState.textContent = 'Chưa tải được lời chúc, cậu thử lại sau nha.';
+          if (!items.length) elState.textContent = 'Chưa tải được lời chúc, bạn thử lại sau nha.';
           return;
         }
         items = res.data || [];
@@ -395,7 +455,7 @@
       var ten = elName.value.trim().replace(/\s+/g, ' ').slice(0, 40);
       var loi = elText.value.trim().slice(0, 300);
 
-      if (!ten) { note('Cậu điền tên giúp Thương nha ♡', true); elName.focus(); return; }
+      if (!ten) { note('Bạn điền tên giúp Thương nha ♡', true); elName.focus(); return; }
       if (loi.length < 2) { note('Lời chúc còn trống kìa!', true); elText.focus(); return; }
 
       sending = true;
@@ -420,8 +480,8 @@
         elSend.disabled = false;
         elSend.textContent = 'Gửi lời chúc ♡';
         confetti(24);
-        toast('Cảm ơn lời chúc của cậu ♡');
-        note(savedOnline ? '' : 'Đang lưu tạm trên máy cậu.');
+        toast('Cảm ơn lời chúc của bạn ♡');
+        note(savedOnline ? '' : 'Đang lưu tạm trên máy bạn.');
       }
 
       if (!online) { done(false); return; }
@@ -431,7 +491,7 @@
           sending = false;
           elSend.disabled = false;
           elSend.textContent = 'Gửi lời chúc ♡';
-          note((res && res.error) || 'Gửi chưa được, cậu thử lại giúp Thương nha!', true);
+          note((res && res.error) || 'Gửi chưa được, bạn thử lại giúp Thương nha!', true);
           return;
         }
         if (res.data && res.data.luc) wish.luc = res.data.luc;
