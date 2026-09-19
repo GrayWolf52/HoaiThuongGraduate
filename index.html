@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Thiệp mời Lễ Tốt Nghiệp — Hoài Thương">
 <meta property="og:description" content="8:00 sáng, Thứ Bảy 26/09/2026 — Học viện Công nghệ Bưu chính Viễn thông.">
-<meta property="og:image" content="Image/img_2.JPG">
+<meta property="og:image" content="Image/img_2-Photoroom.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,21 @@
 <div class="sky" id="sky" aria-hidden="true"></div>
 
 <audio id="backgroundMusic" loop preload="none" src="Music/music.mp3" aria-hidden="true"></audio>
+
+<nav class="quick-nav" aria-label="Điều hướng nhanh">
+  <button class="quick-nav__button" id="homeNav" type="button" aria-label="Về đầu thiệp">
+    <span class="quick-nav__icon" aria-hidden="true">⌂</span>
+    <span>Home</span>
+  </button>
+  <button class="quick-nav__button" id="wishNav" type="button" aria-label="Mở sổ lưu bút">
+    <span class="quick-nav__icon" aria-hidden="true">✎</span>
+    <span>Lưu bút</span>
+  </button>
+  <button class="quick-nav__button" id="musicToggle" type="button" aria-label="Bật nhạc" aria-pressed="false">
+    <span class="quick-nav__icon" aria-hidden="true">♫</span>
+    <span id="musicLabel">Music: Off</span>
+  </button>
+</nav>
 
 <!-- ══════════ Màn mở thiệp ══════════ -->
 <div class="opener" id="opener">
@@ -88,7 +103,7 @@
       <!-- Ảnh -->
       <figure class="photo reveal">
         <div class="photo__inner">
-          <img src="Image/img_2.JPG" alt="Hoài Thương" width="1707" height="2560" loading="eager" decoding="async">
+          <img src="Image/img_2-Photoroom.png" alt="Hoài Thương" width="1600" height="2400" loading="eager" decoding="async">
         </div>
         <!-- Nơ xinh trên đỉnh ảnh -->
         <svg class="bow" viewBox="0 0 140 80" aria-hidden="true">

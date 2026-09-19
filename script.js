@@ -83,12 +83,24 @@
   var opener = $('opener');
   var card = $('card');
   var backgroundMusic = $('backgroundMusic');
+  var musicToggle = $('musicToggle');
+  var musicLabel = $('musicLabel');
+
+  function updateMusicButton() {
+    if (!musicToggle || !musicLabel || !backgroundMusic) return;
+    var isPlaying = !backgroundMusic.paused;
+    musicLabel.textContent = isPlaying ? 'Music: On' : 'Music: Off';
+    musicToggle.setAttribute('aria-label', isPlaying ? 'Tắt nhạc' : 'Bật nhạc');
+    musicToggle.setAttribute('aria-pressed', String(isPlaying));
+    musicToggle.classList.toggle('is-playing', isPlaying);
+  }
 
   function playBackgroundMusic() {
     if (!backgroundMusic) return;
     backgroundMusic.load();
     var playback = backgroundMusic.play();
     if (playback && typeof playback.catch === 'function') playback.catch(function () {});
+    updateMusicButton();
   }
 
   function stagger() {
@@ -120,6 +132,25 @@
   } else {
     stagger();
   }
+
+  if (musicToggle) {
+    musicToggle.addEventListener('click', function () {
+      if (backgroundMusic.paused) playBackgroundMusic();
+      else backgroundMusic.pause();
+      updateMusicButton();
+    });
+    backgroundMusic.addEventListener('play', updateMusicButton);
+    backgroundMusic.addEventListener('pause', updateMusicButton);
+    updateMusicButton();
+  }
+
+  $('homeNav').addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  $('wishNav').addEventListener('click', function () {
+    var wishes = $('wishes');
+    if (wishes) wishes.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   /* --- Đếm ngược ------------------------------------------------------ */
   (function countdown() {
