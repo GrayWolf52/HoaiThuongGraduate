@@ -11,7 +11,7 @@
    * Ví dụ: 'https://script.google.com/macros/s/AKfycbx..../exec'
    * Để trống thì lời chúc chỉ lưu tạm trong máy người xem.
    * ------------------------------------------------------------------ */
-  var WISH_API = 'https://script.google.com/macros/s/AKfycbwNbBz3Q9kAVZIGD8hm1SXlvtUgrbNX-VlB37obdg4UCqybCa3hHabZdrhJLOCt50w/exec';
+  var WISH_API = 'https://script.google.com/macros/s/AKfycbz4LT8kPr1ZTw9DQCS2mjB-gwORXkyShMnzxT2nHluT3kvbYWVc8P6w7vhdFC6CgCE4/exec';
   var DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1550720378668711947/WWLWSiYb4EuHLtF3kryXECIvtT4dVDJCa0-JsZsuInjrTCF7UPN8U0JvpXLocX56ZE06';
 
   /* --- Thông tin buổi lễ --------------------------------------------- */
@@ -20,8 +20,11 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var rand = function (min, max) { return min + Math.random() * (max - min); };
+  var guestParam = new URLSearchParams(location.search).get('ten') ||
+                   decodeURIComponent(location.hash.replace(/^#/, ''));
+  var invitedGuest = guestParam ? guestParam.trim().replace(/\s+/g, ' ').slice(0, 60) : 'BẠN';
 
-  function sendDiscordDirect(ten, loi, luc) {
+  function sendDiscordDirect(ten, loi, luc, attendance, khachMoi) {
     if (!DISCORD_WEBHOOK_URL) return;
 
     fetch(DISCORD_WEBHOOK_URL, {
@@ -35,6 +38,8 @@
           color: 10184504,
           fields: [
             { name: 'Người gửi', value: ten, inline: true },
+            { name: 'Khách mời', value: khachMoi || 'BẠN', inline: true },
+            { name: 'Tham dự', value: attendance === 'yes' ? 'Có' : 'Không', inline: true },
             { name: 'Lời chúc', value: loi, inline: false }
           ],
           timestamp: luc,
@@ -49,12 +54,7 @@
     var el = $('guestName');
     if (!el) return;
 
-    var raw = new URLSearchParams(location.search).get('ten') ||
-              decodeURIComponent(location.hash.replace(/^#/, ''));
-    if (!raw) return;
-
-    var name = raw.trim().replace(/\s+/g, ' ').slice(0, 60);
-    if (name) el.textContent = name;
+    el.textContent = invitedGuest;
   })();
 
   /* --- Tim & sao bay lơ lửng ------------------------------------------ */
@@ -300,6 +300,7 @@
     var elState = $('wishState');
     var elList  = $('wishList');
     var elWrap  = $('wishScroll');
+    var attendanceInputs = form.querySelectorAll('input[name="attendance"]');
 
     var LOCAL_KEY = 'loi-chuc-hoai-thuong';
     var NAME_KEY  = 'ten-khach-hoai-thuong';
@@ -387,12 +388,15 @@
 
       elList.innerHTML = items.map(function (w) {
         var time = since(w.luc);
+        var attendance = w.attendance === 'yes'
+          ? '<span class="wlist__attendance">Sẽ tham dự ♡</span>'
+          : (w.attendance === 'no' ? '<span class="wlist__attendance wlist__attendance--no">Không thể tham dự</span>' : '');
         return '<li' + (w.id && w.id === newestId ? ' class="is-new"' : '') + '>' +
                  '<p class="wlist__head">' +
                    '<span class="wlist__name">' + esc(w.ten || 'Ẩn danh') + '</span>' +
                    (time ? '<span class="wlist__time">' + time + '</span>' : '') +
                  '</p>' +
-                 '<p class="wlist__msg">' + esc(w.loi) + '</p>' +
+                 '<p class="wlist__msg">' + esc(w.loi) + '</p>' + attendance +
                '</li>';
       }).join('');
 
@@ -454,9 +458,12 @@
 
       var ten = elName.value.trim().replace(/\s+/g, ' ').slice(0, 40);
       var loi = elText.value.trim().slice(0, 300);
+      var attendanceChoice = form.querySelector('input[name="attendance"]:checked');
+      var attendance = attendanceChoice ? attendanceChoice.value : '';
 
       if (!ten) { note('Bạn điền tên giúp Thương nha ♡', true); elName.focus(); return; }
       if (loi.length < 2) { note('Lời chúc còn trống kìa!', true); elText.focus(); return; }
+      if (!attendance) { note('Bạn chọn giúp Thương khả năng tham dự nha ♡', true); attendanceInputs[0].focus(); return; }
 
       sending = true;
       elSend.disabled = true;
@@ -465,7 +472,7 @@
 
       try { localStorage.setItem(NAME_KEY, ten); } catch (err) {}
 
-      var wish = { id: 'tmp' + Date.now(), ten: ten, loi: loi, luc: new Date().toISOString() };
+      var wish = { id: 'tmp' + Date.now(), ten: ten, loi: loi, attendance: attendance, khachMoi: invitedGuest, luc: new Date().toISOString() };
 
       function done(savedOnline) {
         items.unshift(wish);
@@ -475,6 +482,7 @@
         try { localStorage.removeItem(NAME_KEY); } catch (err) {}
         elName.value = '';
         elText.value = '';
+        attendanceInputs.forEach(function (input) { input.checked = false; });
         elCount.textContent = '0';
         sending = false;
         elSend.disabled = false;
@@ -486,7 +494,7 @@
 
       if (!online) { done(false); return; }
 
-      jsonp({ action: 'add', ten: ten, loi: loi }, function (err, res) {
+      jsonp({ action: 'add', ten: ten, loi: loi, attendance: attendance, khachMoi: invitedGuest }, function (err, res) {
         if (err || !res || !res.ok) {
           sending = false;
           elSend.disabled = false;
@@ -495,7 +503,7 @@
           return;
         }
         if (res.data && res.data.luc) wish.luc = res.data.luc;
-        sendDiscordDirect(wish.ten, wish.loi, wish.luc);
+        sendDiscordDirect(wish.ten, wish.loi, wish.luc, wish.attendance, wish.khachMoi);
         done(true);
       });
     });

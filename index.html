@@ -151,8 +151,6 @@
         </ul>
       </section>
 
-      <p class="signoff reveal">Có bạn tới nữa là vui hết nấc luôn á <span aria-hidden="true">♡</span></p>
-
       <!-- ══════════ Sổ lưu bút ══════════ -->
       <section class="wishes reveal" id="wishes" aria-labelledby="wishesTitle">
         <h2 class="wishes__title" id="wishesTitle">
@@ -174,6 +172,18 @@
             <span class="wform__count"><b id="wishCount">0</b>/300</span>
           </label>
 
+          <fieldset class="wform__attendance">
+            <legend class="wform__label">Bạn có thể tham dự không?</legend>
+            <label class="wform__choice">
+              <input type="radio" name="attendance" value="yes" required>
+              <span>Có, mình sẽ tham dự ♡</span>
+            </label>
+            <label class="wform__choice">
+              <input type="radio" name="attendance" value="no">
+              <span>Tiếc quá, mình không thể tham dự</span>
+            </label>
+          </fieldset>
+
           <!-- Bẫy spam: người thật không nhìn thấy ô này -->
           <input class="wform__trap" id="wishTrap" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
 
@@ -189,7 +199,7 @@
 
       <!-- ══════════ Story ảnh ══════════ -->
       <section class="story reveal" id="story" aria-labelledby="storyTitle">
-        <h2 class="story__title" id="storyTitle">Nhìn lại một vài khoảnh khắc đáng nhớ của Thương <span aria-hidden="true">✿</span></h2>
+        <h2 class="story__title" id="storyTitle">Nhìn lại một vài khoảnh khắc đáng nhớ của Thương ở PTIT nhé<span aria-hidden="true">✿</span></h2>
         <div class="story__grid" id="storyGrid"></div>
       </section>
 

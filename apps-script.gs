@@ -49,7 +49,7 @@ function listWishes() {
   var last = sh.getLastRow();
   if (last < 2) return [];
 
-  var rows = sh.getRange(2, 1, last - 1, 4).getValues();
+  var rows = sh.getRange(2, 1, last - 1, 6).getValues();
   var out = [];
 
   for (var i = 0; i < rows.length; i++) {
@@ -57,6 +57,8 @@ function listWishes() {
     var ten = String(rows[i][1] || '').trim();
     var loi = String(rows[i][2] || '').trim();
     var hien = rows[i][3];
+    var attendance = String(rows[i][4] || '').trim();
+    var khachMoi = String(rows[i][5] || '').trim();
 
     if (!loi) continue;
     if (hien === false || String(hien).toUpperCase() === 'FALSE') continue;  // ẩn thủ công trong Sheet
@@ -65,6 +67,8 @@ function listWishes() {
       id: 'r' + (i + 2),
       ten: ten || 'Ẩn danh',
       loi: loi,
+      attendance: attendance,
+      khachMoi: khachMoi,
       luc: (luc instanceof Date) ? luc.toISOString() : String(luc || '')
     });
   }
@@ -75,9 +79,12 @@ function listWishes() {
 function addWish(p) {
   var ten = String(p.ten || '').trim().replace(/\s+/g, ' ').slice(0, MAX_NAME);
   var loi = String(p.loi || '').trim().slice(0, MAX_MSG);
+  var attendance = String(p.attendance || '').trim();
+  var khachMoi = String(p.khachMoi || 'BẠN').trim().replace(/\s+/g, ' ').slice(0, 60);
 
   if (!ten) return { ok: false, error: 'Thiếu tên người gửi.' };
   if (loi.length < 2) return { ok: false, error: 'Lời chúc còn trống.' };
+  if (attendance !== 'yes' && attendance !== 'no') return { ok: false, error: 'Chưa chọn khả năng tham dự.' };
 
   var sh = getSheet();
 
@@ -98,17 +105,17 @@ function addWish(p) {
   }
 
   var luc = new Date();
-  sh.appendRow([luc, ten, loi, true]);
-  var discord = sendDiscordNotification(ten, loi, luc);
+  sh.appendRow([luc, ten, loi, true, attendance, khachMoi]);
+  var discord = sendDiscordNotification(ten, loi, luc, attendance, khachMoi);
 
   return {
     ok: true,
-    data: { ten: ten, loi: loi, luc: luc.toISOString() },
+    data: { ten: ten, loi: loi, attendance: attendance, khachMoi: khachMoi, luc: luc.toISOString() },
     discord: discord
   };
 }
 
-function sendDiscordNotification(ten, loi, luc) {
+function sendDiscordNotification(ten, loi, luc, attendance, khachMoi) {
   if (!DISCORD_WEBHOOK_URL) return { ok: false, error: 'Chưa cấu hình Discord webhook.' };
 
   var payload = {
@@ -119,6 +126,8 @@ function sendDiscordNotification(ten, loi, luc) {
       color: 10184504,
       fields: [
         { name: 'Người gửi', value: ten, inline: true },
+        { name: 'Khách mời', value: khachMoi || 'BẠN', inline: true },
+        { name: 'Tham dự', value: attendance === 'yes' ? 'Có' : 'Không', inline: true },
         { name: 'Lời chúc', value: loi, inline: false }
       ],
       timestamp: luc.toISOString(),
@@ -165,12 +174,24 @@ function getSheet() {
 
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
-    sh.appendRow(['Thời gian', 'Tên', 'Lời chúc', 'Hiển thị']);
-    sh.getRange(1, 1, 1, 4).setFontWeight('bold');
+    sh.appendRow(['Thời gian', 'Tên', 'Lời chúc', 'Hiển thị', 'Tham dự', 'Khách mời']);
+    sh.getRange(1, 1, 1, 6).setFontWeight('bold');
     sh.setFrozenRows(1);
     sh.setColumnWidth(1, 160);
     sh.setColumnWidth(2, 160);
     sh.setColumnWidth(3, 460);
+    sh.setColumnWidth(5, 120);
+    sh.setColumnWidth(6, 180);
+  }
+
+  // Bổ sung cột cho các Sheet cũ, kể cả khi getLastColumn() đã tăng do dữ liệu/định dạng.
+  if (String(sh.getRange(1, 5).getValue()).trim() !== 'Tham dự') {
+    sh.getRange(1, 5).setValue('Tham dự').setFontWeight('bold');
+    sh.setColumnWidth(5, 120);
+  }
+  if (String(sh.getRange(1, 6).getValue()).trim() !== 'Khách mời') {
+    sh.getRange(1, 6).setValue('Khách mời').setFontWeight('bold');
+    sh.setColumnWidth(6, 180);
   }
 
   return sh;
