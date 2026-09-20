@@ -13,7 +13,8 @@ var SHEET_NAME = 'LoiChuc';
 var MAX_NAME = 40;
 var MAX_MSG = 300;
 var MAX_ROWS_RETURNED = 200;
-var DISCORD_WEBHOOK_URL = '';  // Discord được gửi trực tiếp từ trang web.
+var DUPLICATE_WINDOW_SECONDS = 120;
+var DISCORD_WEBHOOK_PROPERTY = 'DISCORD_WEBHOOK_URL';
 
 /* ---------------------------------------------------------- *
  * Điểm vào
@@ -86,6 +87,19 @@ function addWish(p) {
   if (loi.length < 2) return { ok: false, error: 'Lời chúc còn trống.' };
   if (attendance !== 'yes' && attendance !== 'no') return { ok: false, error: 'Chưa chọn khả năng tham dự.' };
 
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) {
+    return { ok: false, error: 'Hệ thống đang bận, bạn thử lại sau vài giây nha.' };
+  }
+
+  try {
+    return addWishLocked(ten, loi, attendance, khachMoi);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function addWishLocked(ten, loi, attendance, khachMoi) {
   var sh = getSheet();
 
   // Chặn gửi trùng: cùng tên + cùng nội dung trong vòng 2 phút
@@ -96,7 +110,7 @@ function addWish(p) {
     var now = Date.now();
     for (var i = 0; i < recent.length; i++) {
       var t = recent[i][0] instanceof Date ? recent[i][0].getTime() : 0;
-      if (now - t < 2 * 60 * 1000 &&
+      if (now - t < DUPLICATE_WINDOW_SECONDS * 1000 &&
           String(recent[i][1]).trim() === ten &&
           String(recent[i][2]).trim() === loi) {
         return { ok: false, error: 'Lời chúc này vừa được gửi rồi nha.' };
@@ -116,7 +130,8 @@ function addWish(p) {
 }
 
 function sendDiscordNotification(ten, loi, luc, attendance, khachMoi) {
-  if (!DISCORD_WEBHOOK_URL) return { ok: false, error: 'Chưa cấu hình Discord webhook.' };
+  var webhookUrl = PropertiesService.getScriptProperties().getProperty(DISCORD_WEBHOOK_PROPERTY);
+  if (!webhookUrl) return { ok: false, error: 'Chưa cấu hình Discord webhook.' };
 
   var payload = {
     username: 'Sổ lưu bút Hoài Thương',
@@ -136,7 +151,7 @@ function sendDiscordNotification(ten, loi, luc, attendance, khachMoi) {
   };
 
   try {
-    var response = UrlFetchApp.fetch(DISCORD_WEBHOOK_URL, {
+    var response = UrlFetchApp.fetch(webhookUrl, {
       method: 'post',
       contentType: 'application/json',
       payload: JSON.stringify(payload),
@@ -157,11 +172,15 @@ function sendDiscordNotification(ten, loi, luc, attendance, khachMoi) {
 }
 
 function testDiscordWebhook() {
-  sendDiscordNotification(
+  var result = sendDiscordNotification(
     'Kiểm tra kết nối',
     'Webhook Discord đã kết nối với Google Apps Script.',
-    new Date()
+    new Date(),
+    'yes',
+    'BẢN KIỂM TRA'
   );
+  Logger.log(JSON.stringify(result));
+  return result;
 }
 
 /* ---------------------------------------------------------- *

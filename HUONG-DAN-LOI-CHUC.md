@@ -51,17 +51,28 @@ và hiện lên thiệp.
 
 ## 5. Gửi thông báo lời chúc về Discord
 
-Trang web hiện gửi Discord trực tiếp sau khi Apps Script lưu lời chúc vào Sheet.
-Webhook được cấu hình trong `script.js`, còn `apps-script.gs` để trống webhook
-để tránh gửi trùng.
+Webhook chỉ được lưu trong **Script Properties** của Google Apps Script, không dán
+vào `script.js`, `apps-script.gs` hoặc bất kỳ file nào trong GitHub.
 
-Sau khi thay đổi `apps-script.gs`, hãy lưu và triển khai lại với **Phiên bản: Mới**.
+1. Trong Discord, tạo một webhook mới. Không dùng lại webhook từng bị public.
+2. Mở dự án Apps Script, chọn **Project Settings** (biểu tượng bánh răng).
+3. Tìm mục **Script Properties** rồi bấm **Add script property**.
+4. Nhập:
+   - **Property:** `DISCORD_WEBHOOK_URL`
+   - **Value:** URL webhook Discord mới
+5. Bấm **Save script properties**.
+6. Trong Apps Script, chọn hàm `testDiscordWebhook` rồi bấm **Run**.
+7. Cấp quyền khi Google hỏi. Discord sẽ nhận tin nhắn kiểm tra nếu cấu hình đúng.
 
-Mỗi lời chúc mới sẽ được ghi vào Sheet và gửi thành một embed Discord gồm tên,
-nội dung và thời gian. Nếu Discord lỗi, lời chúc vẫn được lưu vào Sheet.
+Mỗi lời chúc hợp lệ sẽ được ghi vào Sheet trước, sau đó Apps Script gửi một embed
+đến Discord. Nếu Discord tạm lỗi, lời chúc vẫn được lưu vào Sheet.
 
-> Lưu ý: gửi trực tiếp từ frontend làm webhook có thể bị xem trong mã trình duyệt.
-> Với website công khai, nên chuyển lại việc gửi Discord về Apps Script để bảo mật.
+> URL Web App trong `script.js` là địa chỉ công khai và không phải secret. URL
+> Discord webhook mới là secret và chỉ được đặt trong Script Properties.
+
+Sau khi thay đổi `apps-script.gs`, hãy lưu và triển khai lại bằng
+**Deploy → Manage deployments → Edit → New version → Deploy**. Chỉ thay đổi
+Script Properties thì không cần tạo phiên bản triển khai mới.
 
 ---
 

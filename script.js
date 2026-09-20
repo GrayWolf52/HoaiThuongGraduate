@@ -10,44 +10,18 @@
    * (xem hướng dẫn trong HUONG-DAN-LOI-CHUC.md)
    * Ví dụ: 'https://script.google.com/macros/s/AKfycbx..../exec'
    * Để trống thì lời chúc chỉ lưu tạm trong máy người xem.
-   * ------------------------------------------------------------------ */
-  var WISH_API = 'https://script.google.com/macros/s/AKfycbz4LT8kPr1ZTw9DQCS2mjB-gwORXkyShMnzxT2nHluT3kvbYWVc8P6w7vhdFC6CgCE4/exec';
-  var DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1550720378668711947/WWLWSiYb4EuHLtF3kryXECIvtT4dVDJCa0-JsZsuInjrTCF7UPN8U0JvpXLocX56ZE06';
+  * ------------------------------------------------------------------ */
+  var WISH_API = 'https://script.google.com/macros/s/AKfycbz7tx0s80gkmbsMM88-I1TAf61NvdqaMW448nHb6gs9ZcUcTkbsYAXsKFA2rT_Suo79/exec';
 
   /* --- Thông tin buổi lễ --------------------------------------------- */
-  // 8:00 sáng, Thứ Bảy 26/09/2026 (giờ Việt Nam, UTC+7)
-  var EVENT = { start: new Date('2026-09-26T08:00:00+07:00') };
+  // 7:00 - 11:00 sáng, Thứ Bảy 26/09/2026 (giờ Việt Nam, UTC+7)
+  var EVENT = { start: new Date('2026-09-26T07:00:00+07:00') };
 
   var $ = function (id) { return document.getElementById(id); };
   var rand = function (min, max) { return min + Math.random() * (max - min); };
   var guestParam = new URLSearchParams(location.search).get('ten') ||
                    decodeURIComponent(location.hash.replace(/^#/, ''));
   var invitedGuest = guestParam ? guestParam.trim().replace(/\s+/g, ' ').slice(0, 60) : 'BẠN';
-
-  function sendDiscordDirect(ten, loi, luc, attendance, khachMoi) {
-    if (!DISCORD_WEBHOOK_URL) return;
-
-    fetch(DISCORD_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: 'Sổ lưu bút Hoài Thương',
-        allowed_mentions: { parse: [] },
-        embeds: [{
-          title: 'Có lời chúc mới',
-          color: 10184504,
-          fields: [
-            { name: 'Người gửi', value: ten, inline: true },
-            { name: 'Khách mời', value: khachMoi || 'BẠN', inline: true },
-            { name: 'Tham dự', value: attendance === 'yes' ? 'Có' : 'Không', inline: true },
-            { name: 'Lời chúc', value: loi, inline: false }
-          ],
-          timestamp: luc,
-          footer: { text: 'Thiệp mời Lễ Tốt Nghiệp' }
-        }]
-      })
-    }).catch(function () {});
-  }
 
   /* --- Tên khách mời: đọc từ ?ten=... hoặc #ten ----------------------- */
   (function setGuestName() {
@@ -503,7 +477,6 @@
           return;
         }
         if (res.data && res.data.luc) wish.luc = res.data.luc;
-        sendDiscordDirect(wish.ten, wish.loi, wish.luc, wish.attendance, wish.khachMoi);
         done(true);
       });
     });
